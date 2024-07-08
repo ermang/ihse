@@ -19,8 +19,8 @@ public class StockController {
         this.stockService = stockService;
     }
 
-    @PostMapping()
-    public void createThread(@RequestBody @Valid CreateStockReq createStockReq){
+    @PostMapping
+    public void createStock(@RequestBody @Valid CreateStockReq createStockReq){
         stockService.createStock(createStockReq);
     }
 }
