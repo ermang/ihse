@@ -15,6 +15,7 @@ import com.eg.ihse.util.Req2Entity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 @Transactional
@@ -34,6 +35,10 @@ public class ExchangeService {
     }
 
     public void createStockExchange(CreateExchangeReq createExchangeReq) {
+
+        if (exchangeRepo.findByName(createExchangeReq.name) != null)
+            throw new IllegalArgumentException(MessageFormat.format("exchange with name {0} already exists", createExchangeReq.name));
+
         Exchange exchange = req2Entity.createStockExchangeReq2StockExchange(createExchangeReq);
 
         exchangeRepo.save(exchange);
@@ -42,16 +47,19 @@ public class ExchangeService {
     //TODO: may need extra locking mechanism for count() decide
     public void addStock2Exchange(AddStock2ExchangeReq addStock2ExchangeReq) {
 
-
-        //TODO: decide on this
-        //List<StockExchangeRel> relList = stockExchangeRelRepo.findAllByExchangeName(addStock2ExchangeReq.exchangeName);
-//
-//        if(exchange == null)
-//            throw new RuntimeException();
-
-        //TODO: deal with null checks
         Exchange exchange = exchangeRepo.findByName(addStock2ExchangeReq.exchangeName);
+
+        if (exchange == null)
+            throw new IllegalArgumentException(MessageFormat.format("exchange with name {0} does not exist", addStock2ExchangeReq.exchangeName));
+
         Stock stock = stockRepo.findByName(addStock2ExchangeReq.stockName);
+
+        if (stock == null)
+            throw new IllegalArgumentException(MessageFormat.format("stock with name {0} does not exist", addStock2ExchangeReq.stockName));
+
+        if (stockExchangeRelRepo.findByExchangeNameAndStockName(addStock2ExchangeReq.exchangeName, addStock2ExchangeReq.stockName) != null)
+            throw new IllegalArgumentException(MessageFormat.format("stock {0} is already registered to exchange {1}", addStock2ExchangeReq.stockName, addStock2ExchangeReq.exchangeName));
+
         StockExchangeRel stockExchangeRel = new StockExchangeRel();
         stockExchangeRel.setExchange(exchange);
         stockExchangeRel.setStock(stock);
@@ -72,7 +80,11 @@ public class ExchangeService {
 
         Exchange exchange = exchangeRepo.findByName(deleteStockFromExchangeReq.exchangeName);
 
+        if (stockExchangeRelRepo.findByExchangeNameAndStockName(deleteStockFromExchangeReq.exchangeName, deleteStockFromExchangeReq.stockName) == null)
+            throw new IllegalArgumentException(MessageFormat.format("stock {0} is not registered to exchange {1}", deleteStockFromExchangeReq.stockName, deleteStockFromExchangeReq.exchangeName));
+
         stockExchangeRelRepo.deleteByExchangeNameAndStockName(deleteStockFromExchangeReq.exchangeName, deleteStockFromExchangeReq.stockName);
+
 
         long numberOfStocks = stockExchangeRelRepo.countByExchangeName(deleteStockFromExchangeReq.exchangeName);
 
