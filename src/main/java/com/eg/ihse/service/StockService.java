@@ -1,6 +1,7 @@
 package com.eg.ihse.service;
 
 import com.eg.ihse.controller.request.CreateStockReq;
+import com.eg.ihse.controller.request.UpdateStockPriceReq;
 import com.eg.ihse.entity.Stock;
 import com.eg.ihse.repo.StockRepo;
 import com.eg.ihse.util.Req2Entity;
@@ -23,6 +24,17 @@ public class StockService {
 
     public void createStock(CreateStockReq createStockReq) {
         Stock stock = req2Entity.createStockReq2Stock(createStockReq);
+
+        stockRepo.save(stock);
+    }
+
+    public void updatePrice(UpdateStockPriceReq updateStockPriceReq) {
+        Stock stock = stockRepo.findByName(updateStockPriceReq.name);
+
+        if(stock == null)
+            throw new RuntimeException();
+
+        stock.setPrice(updateStockPriceReq.price);
 
         stockRepo.save(stock);
     }

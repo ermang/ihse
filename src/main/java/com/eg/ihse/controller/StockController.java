@@ -1,11 +1,9 @@
 package com.eg.ihse.controller;
 
 import com.eg.ihse.controller.request.CreateStockReq;
+import com.eg.ihse.controller.request.UpdateStockPriceReq;
 import com.eg.ihse.service.StockService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -22,5 +20,10 @@ public class StockController {
     @PostMapping
     public void createStock(@RequestBody @Valid CreateStockReq createStockReq){
         stockService.createStock(createStockReq);
+    }
+
+    @PutMapping
+    public void updateStockPrice(@RequestBody @Valid UpdateStockPriceReq updateStockPriceReq) {
+        stockService.updatePrice(updateStockPriceReq);
     }
 }
