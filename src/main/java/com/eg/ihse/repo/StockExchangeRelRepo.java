@@ -13,4 +13,6 @@ public interface StockExchangeRelRepo extends JpaRepository<StockExchangeRel, Lo
     Long countByExchangeName(String exchangeName);
 
     void deleteByExchangeNameAndStockName(String exchangeName, String stockName);
+
+    boolean existsByStockName(String stockName);
 }

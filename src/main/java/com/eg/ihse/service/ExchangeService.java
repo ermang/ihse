@@ -18,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ExchangeService {
 
-
-
     private final ExchangeRepo exchangeRepo;
     private final StockRepo stockRepo;
     private final StockExchangeRelRepo stockExchangeRelRepo;
@@ -38,6 +36,7 @@ public class ExchangeService {
         exchangeRepo.save(exchange);
     }
 
+    //TODO: may need extra locking mechanism for count() decide
     public void addStock2Exchange(AddStock2ExchangeReq addStock2ExchangeReq) {
 
 

@@ -26,4 +26,9 @@ public class StockController {
     public void updateStockPrice(@RequestBody @Valid UpdateStockPriceReq updateStockPriceReq) {
         stockService.updatePrice(updateStockPriceReq);
     }
+
+    @DeleteMapping("/{stockName}")
+    public void deleteStock(@PathVariable String stockName){
+        stockService.deleteStock(stockName);
+    }
 }
