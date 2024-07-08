@@ -1,4 +1,4 @@
-package com.eg.ihse.controller;
+package com.eg.ihse.controller.helper;
 
 
 import com.eg.ihse.controller.response.ErrorResponse;

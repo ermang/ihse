@@ -1,7 +1,8 @@
 package com.eg.ihse.controller;
 
+import com.eg.ihse.controller.helper.RequestValidator;
 import com.eg.ihse.controller.request.AddStock2ExchangeReq;
-import com.eg.ihse.controller.request.CreateStockExchangeReq;
+import com.eg.ihse.controller.request.CreateExchangeReq;
 import com.eg.ihse.controller.request.DeleteStockFromExchangeReq;
 import com.eg.ihse.entity.projection.ReadStock;
 import com.eg.ihse.service.ExchangeService;
@@ -14,15 +15,18 @@ import java.util.List;
 @RequestMapping("/api/v1/stock-exchange")
 public class ExchangeController {
 
+    private final RequestValidator requestValidator;
     private final ExchangeService exchangeService;
 
-    public ExchangeController(ExchangeService exchangeService) {
+    public ExchangeController(RequestValidator requestValidator, ExchangeService exchangeService) {
+        this.requestValidator = requestValidator;
         this.exchangeService = exchangeService;
     }
 
     @PostMapping
-    public void createStockExchange(@RequestBody @Valid CreateStockExchangeReq createStockExchangeReq) {
-        exchangeService.createStockExchange(createStockExchangeReq);
+    public void createStockExchange(@RequestBody @Valid CreateExchangeReq createExchangeReq) {
+        requestValidator.validate(createExchangeReq);
+        exchangeService.createStockExchange(createExchangeReq);
     }
 
     @GetMapping("/{exchangeName}")

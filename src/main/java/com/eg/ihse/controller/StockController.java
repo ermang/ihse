@@ -1,5 +1,6 @@
 package com.eg.ihse.controller;
 
+import com.eg.ihse.controller.helper.RequestValidator;
 import com.eg.ihse.controller.request.CreateStockReq;
 import com.eg.ihse.controller.request.UpdateStockPriceReq;
 import com.eg.ihse.service.StockService;
@@ -11,14 +12,17 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/stock")
 public class StockController {
 
+    private final RequestValidator requestValidator;
     private final StockService stockService;
 
-    public StockController(StockService stockService) {
+    public StockController(RequestValidator requestValidator, StockService stockService) {
+        this.requestValidator = requestValidator;
         this.stockService = stockService;
     }
 
     @PostMapping
     public void createStock(@RequestBody @Valid CreateStockReq createStockReq){
+        requestValidator.validate(createStockReq);
         stockService.createStock(createStockReq);
     }
 

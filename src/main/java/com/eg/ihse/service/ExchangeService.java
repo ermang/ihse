@@ -1,7 +1,7 @@
 package com.eg.ihse.service;
 
 import com.eg.ihse.controller.request.AddStock2ExchangeReq;
-import com.eg.ihse.controller.request.CreateStockExchangeReq;
+import com.eg.ihse.controller.request.CreateExchangeReq;
 import com.eg.ihse.controller.request.DeleteStockFromExchangeReq;
 import com.eg.ihse.entity.Exchange;
 import com.eg.ihse.entity.Stock;
@@ -33,8 +33,8 @@ public class ExchangeService {
         this.req2Entity = req2Entity;
     }
 
-    public void createStockExchange(CreateStockExchangeReq createStockExchangeReq) {
-        Exchange exchange = req2Entity.createStockExchangeReq2StockExchange(createStockExchangeReq);
+    public void createStockExchange(CreateExchangeReq createExchangeReq) {
+        Exchange exchange = req2Entity.createStockExchangeReq2StockExchange(createExchangeReq);
 
         exchangeRepo.save(exchange);
     }
