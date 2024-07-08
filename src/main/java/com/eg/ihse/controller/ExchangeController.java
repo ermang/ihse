@@ -25,7 +25,7 @@ public class ExchangeController {
         exchangeService.createStockExchange(createStockExchangeReq);
     }
 
-    @PostMapping("/add/stock")
+    @PostMapping("/add-stock")
     public void addStock(@RequestBody @Valid AddStock2ExchangeReq addStock2ExchangeReq) {
         exchangeService.addStock2Exchange(addStock2ExchangeReq);
     }
