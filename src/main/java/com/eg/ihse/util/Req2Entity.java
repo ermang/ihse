@@ -12,6 +12,7 @@ public class Req2Entity {
 
         s.setName(csr.name);
         s.setDescription(csr.description);
+        s.setPrice(csr.price);
 
         return s;
     }
