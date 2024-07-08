@@ -2,6 +2,7 @@ package com.eg.ihse.service;
 
 import com.eg.ihse.controller.request.AddStock2ExchangeReq;
 import com.eg.ihse.controller.request.CreateStockExchangeReq;
+import com.eg.ihse.controller.request.DeleteStockFromExchangeReq;
 import com.eg.ihse.entity.Exchange;
 import com.eg.ihse.entity.Stock;
 import com.eg.ihse.entity.StockExchangeRel;
@@ -56,6 +57,22 @@ public class ExchangeService {
         stockExchangeRelRepo.save(stockExchangeRel);
 
         long numberOfStocks = stockExchangeRelRepo.countByExchangeName(addStock2ExchangeReq.exchangeName);
+
+        if (numberOfStocks >= Constant.MIN_STOCK_COUNT_FOR_LIVE)
+            exchange.setLive(true);
+        else
+            exchange.setLive(false);
+
+        exchangeRepo.save(exchange);
+    }
+
+    public void deleteStockFromExchange(DeleteStockFromExchangeReq deleteStockFromExchangeReq) {
+
+        Exchange exchange = exchangeRepo.findByName(deleteStockFromExchangeReq.exchangeName);
+
+        stockExchangeRelRepo.deleteByExchangeNameAndStockName(deleteStockFromExchangeReq.exchangeName, deleteStockFromExchangeReq.stockName);
+
+        long numberOfStocks = stockExchangeRelRepo.countByExchangeName(deleteStockFromExchangeReq.exchangeName);
 
         if (numberOfStocks >= Constant.MIN_STOCK_COUNT_FOR_LIVE)
             exchange.setLive(true);

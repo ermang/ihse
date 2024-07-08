@@ -11,4 +11,6 @@ public interface StockExchangeRelRepo extends JpaRepository<StockExchangeRel, Lo
     List<StockExchangeRel> findAllByExchangeName(String exchangeName);
 
     Long countByExchangeName(String exchangeName);
+
+    void deleteByExchangeNameAndStockName(String exchangeName, String stockName);
 }
