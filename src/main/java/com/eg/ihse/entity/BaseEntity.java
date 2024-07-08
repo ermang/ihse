@@ -14,12 +14,13 @@ public class BaseEntity {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-
     private LocalDateTime updatedAt;
+
+    @Version
+    private int version;
 
     @PrePersist
     protected void onCreate() {
@@ -53,5 +54,13 @@ public class BaseEntity {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

@@ -28,6 +28,7 @@ public class StockService {
         stockRepo.save(stock);
     }
 
+    //TODO: @Version works and solves org.springframework.orm.ObjectOptimisticLockingFailureException
     public void updatePrice(UpdateStockPriceReq updateStockPriceReq) {
         Stock stock = stockRepo.findByName(updateStockPriceReq.name);
 
