@@ -3,10 +3,9 @@ package com.eg.ihse.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
-import java.math.BigDecimal;
 
 @Entity
-public class StockExchange extends BaseEntity{
+public class Exchange extends BaseEntity{
 
     @NotBlank
     @Column(nullable = false, unique = true)

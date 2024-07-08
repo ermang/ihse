@@ -3,7 +3,7 @@ package com.eg.ihse.util;
 import com.eg.ihse.controller.request.CreateStockExchangeReq;
 import com.eg.ihse.controller.request.CreateStockReq;
 import com.eg.ihse.entity.Stock;
-import com.eg.ihse.entity.StockExchange;
+import com.eg.ihse.entity.Exchange;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,9 +19,9 @@ public class Req2Entity {
         return s;
     }
 
-    public StockExchange createStockExchangeReq2StockExchange(CreateStockExchangeReq cser) {
+    public Exchange createStockExchangeReq2StockExchange(CreateStockExchangeReq cser) {
 
-        StockExchange se = new StockExchange();
+        Exchange se = new Exchange();
         se.setName(cser.name);
         se.setDescription(cser.description);
         se.setLive(false);
