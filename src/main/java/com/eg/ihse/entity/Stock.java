@@ -1,5 +1,7 @@
 package com.eg.ihse.entity;
 
+import com.eg.ihse.util.Constant;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -18,7 +20,7 @@ public class Stock extends BaseEntity{
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false, precision = 9, scale = 4)
+    @Column(nullable = false, precision = Constant.STOCK_PRICE_DB_PRECISION, scale = Constant.STOCK_PRICE_MIN_FRACTIONAL_PART)
     private BigDecimal price;
 
     public String getName() {

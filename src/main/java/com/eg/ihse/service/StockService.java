@@ -9,6 +9,8 @@ import com.eg.ihse.util.Req2Entity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
+
 @Transactional
 @Service
 public class StockService {
@@ -24,6 +26,10 @@ public class StockService {
     }
 
     public void createStock(CreateStockReq createStockReq) {
+
+        if (stockRepo.findByName(createStockReq.name) != null)
+            throw new IllegalArgumentException(MessageFormat.format("stock with name {0} already exists", createStockReq.name));
+
         Stock stock = req2Entity.createStockReq2Stock(createStockReq);
 
         stockRepo.save(stock);
@@ -31,10 +37,11 @@ public class StockService {
 
     //TODO: @Version works and solves org.springframework.orm.ObjectOptimisticLockingFailureException
     public void updatePrice(UpdateStockPriceReq updateStockPriceReq) {
+
         Stock stock = stockRepo.findByName(updateStockPriceReq.name);
 
         if(stock == null)
-            throw new RuntimeException();
+            throw new IllegalArgumentException(MessageFormat.format("stock with name {0} does not exist", updateStockPriceReq.name));
 
         stock.setPrice(updateStockPriceReq.price);
 
@@ -45,7 +52,7 @@ public class StockService {
     public void deleteStock(String stockName) {
 
         if (stockExchangeRelRepo.existsByStockName(stockName))
-            throw new RuntimeException();
+            throw new IllegalArgumentException(MessageFormat.format("stock with name {0} is registered to exchange, can not be deleted", stockName));
         else
             stockRepo.deleteByName(stockName);
     }
