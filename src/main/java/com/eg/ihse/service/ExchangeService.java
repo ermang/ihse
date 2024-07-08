@@ -6,6 +6,7 @@ import com.eg.ihse.controller.request.DeleteStockFromExchangeReq;
 import com.eg.ihse.entity.Exchange;
 import com.eg.ihse.entity.Stock;
 import com.eg.ihse.entity.StockExchangeRel;
+import com.eg.ihse.entity.projection.ReadStock;
 import com.eg.ihse.repo.ExchangeRepo;
 import com.eg.ihse.repo.StockExchangeRelRepo;
 import com.eg.ihse.repo.StockRepo;
@@ -13,6 +14,8 @@ import com.eg.ihse.util.Constant;
 import com.eg.ihse.util.Req2Entity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional
 @Service
@@ -79,5 +82,12 @@ public class ExchangeService {
             exchange.setLive(false);
 
         exchangeRepo.save(exchange);
+    }
+
+    public List<ReadStock> getAllStocksInExchange(String exchangeName) {
+
+        List<ReadStock> stockList = stockRepo.findAllStocksInExchangeRO(exchangeName);
+
+        return stockList;
     }
 }

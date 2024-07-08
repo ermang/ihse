@@ -3,10 +3,12 @@ package com.eg.ihse.controller;
 import com.eg.ihse.controller.request.AddStock2ExchangeReq;
 import com.eg.ihse.controller.request.CreateStockExchangeReq;
 import com.eg.ihse.controller.request.DeleteStockFromExchangeReq;
+import com.eg.ihse.entity.projection.ReadStock;
 import com.eg.ihse.service.ExchangeService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/stock-exchange")
@@ -21,6 +23,13 @@ public class ExchangeController {
     @PostMapping
     public void createStockExchange(@RequestBody @Valid CreateStockExchangeReq createStockExchangeReq) {
         exchangeService.createStockExchange(createStockExchangeReq);
+    }
+
+    @GetMapping("/{exchangeName}")
+    public List<ReadStock> getAllStocksInExchange(@PathVariable String exchangeName) {
+        List<ReadStock> result = exchangeService.getAllStocksInExchange(exchangeName);
+
+        return result;
     }
 
     @PostMapping("/stock")
