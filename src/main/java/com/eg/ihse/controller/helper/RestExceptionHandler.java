@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -64,6 +65,13 @@ public class RestExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = { HttpMessageNotReadableException.class })
     protected ErrorResponse handleUnAuthorizedException(HttpMessageNotReadableException ex, WebRequest request) {
+
+        return new ErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = { HttpRequestMethodNotSupportedException.class })
+    protected ErrorResponse handleUnAuthorizedException(HttpRequestMethodNotSupportedException ex, WebRequest request) {
 
         return new ErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }

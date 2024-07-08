@@ -6,7 +6,7 @@ import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 public class UpdateStockPriceReq {
-    @Size(min = Constant.MIN_NAME_SIZE, max = Constant.MAX_NAME_SIZE, message = "name size must be between" + Constant.MIN_NAME_SIZE + "-" + Constant.MAX_NAME_SIZE)
+    @Size(min = Constant.MIN_NAME_SIZE, max = Constant.MAX_NAME_SIZE, message = "name size must be between " + Constant.MIN_NAME_SIZE + "-" + Constant.MAX_NAME_SIZE)
     @NotBlank(message = "name can not be blank")
     public String name;
 
