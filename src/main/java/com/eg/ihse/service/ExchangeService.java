@@ -96,6 +96,15 @@ public class ExchangeService {
 
     public List<ReadStock> getAllStocksInExchange(String exchangeName) {
 
+        Exchange exchange = exchangeRepo.findByName(exchangeName);
+
+        if (exchange == null)
+            throw new IllegalArgumentException(MessageFormat.format("exchange with name {0} does not exist", exchangeName));
+
+        if (exchange.isLive() == false)
+            throw new IllegalArgumentException(MessageFormat.format("exchange with name {0} is not live", exchangeName));
+
+
         List<ReadStock> stockList = stockRepo.findAllStocksInExchangeRO(exchangeName);
 
         return stockList;

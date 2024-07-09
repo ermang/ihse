@@ -120,8 +120,36 @@ public class ExchangeServiceTest {
     }
 
     @Test
+    public void get_all_stocks_in_exchange_throws_ex_when_exchange_does_not_exist() {
+
+        Throwable actual = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            exchangeService.getAllStocksInExchange("NO_SUCH_EXCHANGE");
+        });
+
+        Assertions.assertEquals("exchange with name NO_SUCH_EXCHANGE does not exist", actual.getMessage());
+    }
+
+    @Test
+    public void get_all_stocks_in_exchange_throws_ex_when_exchange_is_not_live() {
+
+        Mockito.when(exchangeRepo.findByName("EXCHANGE_NOT_LIVE")).thenReturn(new Exchange());
+
+        Throwable actual = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            exchangeService.getAllStocksInExchange("EXCHANGE_NOT_LIVE");
+        });
+
+        Assertions.assertEquals("exchange with name EXCHANGE_NOT_LIVE is not live", actual.getMessage());
+    }
+
+    @Test
     public void get_all_stocks_in_exchange() {
-        List<ReadStock> actual = exchangeService.getAllStocksInExchange(null);
+
+        Exchange exchange = new Exchange();
+        exchange.setLive(true);
+
+        Mockito.when(exchangeRepo.findByName("BIST")).thenReturn(exchange);
+
+        List<ReadStock> actual = exchangeService.getAllStocksInExchange("BIST");
 
         Assertions.assertTrue(actual.isEmpty());
     }
