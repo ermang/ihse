@@ -39,7 +39,7 @@ public class ExchangeService {
         if (exchangeRepo.findByName(createExchangeReq.name) != null)
             throw new IllegalArgumentException(MessageFormat.format("exchange with name {0} already exists", createExchangeReq.name));
 
-        Exchange exchange = req2Entity.createStockExchangeReq2StockExchange(createExchangeReq);
+        Exchange exchange = req2Entity.createExchangeReq2Exchange(createExchangeReq);
 
         exchangeRepo.save(exchange);
     }

@@ -1,4 +1,4 @@
-package com.eg.ihse.test;
+package com.eg.ihse.test.service;
 
 import com.eg.ihse.controller.request.CreateExchangeReq;
 import com.eg.ihse.entity.Exchange;

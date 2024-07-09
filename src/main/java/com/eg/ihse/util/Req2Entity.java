@@ -19,7 +19,7 @@ public class Req2Entity {
         return s;
     }
 
-    public Exchange createStockExchangeReq2StockExchange(CreateExchangeReq cser) {
+    public Exchange createExchangeReq2Exchange(CreateExchangeReq cser) {
 
         Exchange se = new Exchange();
         se.setName(cser.name);
