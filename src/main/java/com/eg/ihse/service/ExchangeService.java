@@ -34,7 +34,7 @@ public class ExchangeService {
         this.req2Entity = req2Entity;
     }
 
-    public void createStockExchange(CreateExchangeReq createExchangeReq) {
+    public void createExchange(CreateExchangeReq createExchangeReq) {
 
         if (exchangeRepo.findByName(createExchangeReq.name) != null)
             throw new IllegalArgumentException(MessageFormat.format("exchange with name {0} already exists", createExchangeReq.name));

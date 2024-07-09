@@ -26,7 +26,7 @@ public class ExchangeController {
     @PostMapping
     public void createStockExchange(@RequestBody @Valid CreateExchangeReq createExchangeReq) {
         requestValidator.validate(createExchangeReq);
-        exchangeService.createStockExchange(createExchangeReq);
+        exchangeService.createExchange(createExchangeReq);
     }
 
     @GetMapping("/{exchangeName}")
