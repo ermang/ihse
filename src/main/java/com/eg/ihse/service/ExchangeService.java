@@ -78,13 +78,12 @@ public class ExchangeService {
 
     public void deleteStockFromExchange(DeleteStockFromExchangeReq deleteStockFromExchangeReq) {
 
-        Exchange exchange = exchangeRepo.findByName(deleteStockFromExchangeReq.exchangeName);
-
         if (stockExchangeRelRepo.findByExchangeNameAndStockName(deleteStockFromExchangeReq.exchangeName, deleteStockFromExchangeReq.stockName) == null)
             throw new IllegalArgumentException(MessageFormat.format("stock {0} is not registered to exchange {1}", deleteStockFromExchangeReq.stockName, deleteStockFromExchangeReq.exchangeName));
 
-        stockExchangeRelRepo.deleteByExchangeNameAndStockName(deleteStockFromExchangeReq.exchangeName, deleteStockFromExchangeReq.stockName);
+        Exchange exchange = exchangeRepo.findByName(deleteStockFromExchangeReq.exchangeName);
 
+        stockExchangeRelRepo.deleteByExchangeNameAndStockName(deleteStockFromExchangeReq.exchangeName, deleteStockFromExchangeReq.stockName);
 
         long numberOfStocks = stockExchangeRelRepo.countByExchangeName(deleteStockFromExchangeReq.exchangeName);
 
