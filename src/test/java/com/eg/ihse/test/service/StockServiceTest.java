@@ -1,14 +1,11 @@
 package com.eg.ihse.test.service;
 
-import com.eg.ihse.controller.request.CreateStockReq;
-import com.eg.ihse.controller.request.UpdateStockPriceReq;
 import com.eg.ihse.entity.Stock;
 import com.eg.ihse.repo.StockExchangeRelRepo;
 import com.eg.ihse.repo.StockRepo;
 import com.eg.ihse.service.StockService;
 import com.eg.ihse.service.request.CreateStockServiceReq;
 import com.eg.ihse.service.request.UpdateStockPriceServiceReq;
-import com.eg.ihse.util.Req2Entity;
 import com.eg.ihse.util.ServiceReq2Entity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,13 +1,10 @@
 package com.eg.ihse.service;
 
-import com.eg.ihse.controller.request.CreateStockReq;
-import com.eg.ihse.controller.request.UpdateStockPriceReq;
 import com.eg.ihse.entity.Stock;
 import com.eg.ihse.repo.StockExchangeRelRepo;
 import com.eg.ihse.repo.StockRepo;
 import com.eg.ihse.service.request.CreateStockServiceReq;
 import com.eg.ihse.service.request.UpdateStockPriceServiceReq;
-import com.eg.ihse.util.Req2Entity;
 import com.eg.ihse.util.ServiceReq2Entity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +35,6 @@ public class StockService {
         stockRepo.save(stock);
     }
 
-    //TODO: @Version works and solves org.springframework.orm.ObjectOptimisticLockingFailureException
     public void updatePrice(UpdateStockPriceServiceReq updateStockPriceServiceReq) {
 
         Stock stock = stockRepo.findByName(updateStockPriceServiceReq.name);

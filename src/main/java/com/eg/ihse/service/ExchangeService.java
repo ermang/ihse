@@ -1,8 +1,5 @@
 package com.eg.ihse.service;
 
-import com.eg.ihse.controller.request.AddStock2ExchangeReq;
-import com.eg.ihse.controller.request.CreateExchangeReq;
-import com.eg.ihse.controller.request.DeleteStockFromExchangeReq;
 import com.eg.ihse.entity.Exchange;
 import com.eg.ihse.entity.Stock;
 import com.eg.ihse.entity.StockExchangeRel;
@@ -14,7 +11,6 @@ import com.eg.ihse.service.request.AddStock2ExchangeServiceReq;
 import com.eg.ihse.service.request.CreateExchangeServiceReq;
 import com.eg.ihse.service.request.DeleteStockFromExchangeServiceReq;
 import com.eg.ihse.util.Constant;
-import com.eg.ihse.util.Req2Entity;
 import com.eg.ihse.util.ServiceReq2Entity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +44,6 @@ public class ExchangeService {
         exchangeRepo.save(exchange);
     }
 
-    //TODO: may need extra locking mechanism for count() decide
     public void addStock2Exchange(AddStock2ExchangeServiceReq addStock2ExchangeServiceReq) {
 
         Exchange exchange = exchangeRepo.findByName(addStock2ExchangeServiceReq.exchangeName);

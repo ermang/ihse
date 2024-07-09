@@ -1,12 +1,9 @@
 package com.eg.ihse.test.util;
 
-import com.eg.ihse.controller.request.CreateExchangeReq;
-import com.eg.ihse.controller.request.CreateStockReq;
 import com.eg.ihse.entity.Exchange;
 import com.eg.ihse.entity.Stock;
 import com.eg.ihse.service.request.CreateExchangeServiceReq;
 import com.eg.ihse.service.request.CreateStockServiceReq;
-import com.eg.ihse.util.Req2Entity;
 import com.eg.ihse.util.ServiceReq2Entity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

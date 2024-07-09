@@ -1,7 +1,3 @@
---SET AUTOCOMMIT=0;
---INSERT INTO role (name) VALUES ('ROLE_USER');
---INSERT INTO role (name) VALUES ('ROLE_ADMIN');
-
 INSERT INTO STOCK (name, description, price, created_at, version) VALUES ('INGH', 'INGH', 10.0001, NOW(), 0);
 INSERT INTO STOCK (name, description, price, created_at, version) VALUES ('GARAN', 'GARAN', 9.0010, NOW(), 0);
 INSERT INTO STOCK (name, description, price, created_at, version) VALUES ('ISCTR', 'ISCTR', 5.0100, NOW(), 0);
