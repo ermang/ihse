@@ -10,8 +10,12 @@ import com.eg.ihse.entity.projection.ReadStock;
 import com.eg.ihse.repo.ExchangeRepo;
 import com.eg.ihse.repo.StockExchangeRelRepo;
 import com.eg.ihse.repo.StockRepo;
+import com.eg.ihse.service.request.AddStock2ExchangeServiceReq;
+import com.eg.ihse.service.request.CreateExchangeServiceReq;
+import com.eg.ihse.service.request.DeleteStockFromExchangeServiceReq;
 import com.eg.ihse.util.Constant;
 import com.eg.ihse.util.Req2Entity;
+import com.eg.ihse.util.ServiceReq2Entity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,43 +26,43 @@ import java.util.List;
 @Service
 public class ExchangeService {
 
+    private final ServiceReq2Entity serviceReq2Entity;
     private final ExchangeRepo exchangeRepo;
     private final StockRepo stockRepo;
     private final StockExchangeRelRepo stockExchangeRelRepo;
-    private final Req2Entity req2Entity;
 
-    public ExchangeService(ExchangeRepo exchangeRepo, StockRepo stockRepo, StockExchangeRelRepo stockExchangeRelRepo, Req2Entity req2Entity) {
+    public ExchangeService(ServiceReq2Entity serviceReq2Entity, ExchangeRepo exchangeRepo, StockRepo stockRepo, StockExchangeRelRepo stockExchangeRelRepo) {
+        this.serviceReq2Entity = serviceReq2Entity;
         this.exchangeRepo = exchangeRepo;
         this.stockRepo = stockRepo;
         this.stockExchangeRelRepo = stockExchangeRelRepo;
-        this.req2Entity = req2Entity;
     }
 
-    public void createExchange(CreateExchangeReq createExchangeReq) {
+    public void createExchange(CreateExchangeServiceReq createExchangeServiceReq) {
 
-        if (exchangeRepo.findByName(createExchangeReq.name) != null)
-            throw new IllegalArgumentException(MessageFormat.format("exchange with name {0} already exists", createExchangeReq.name));
+        if (exchangeRepo.findByName(createExchangeServiceReq.name) != null)
+            throw new IllegalArgumentException(MessageFormat.format("exchange with name {0} already exists", createExchangeServiceReq.name));
 
-        Exchange exchange = req2Entity.createExchangeReq2Exchange(createExchangeReq);
+        Exchange exchange = serviceReq2Entity.createExchangeReq2Exchange(createExchangeServiceReq);
 
         exchangeRepo.save(exchange);
     }
 
     //TODO: may need extra locking mechanism for count() decide
-    public void addStock2Exchange(AddStock2ExchangeReq addStock2ExchangeReq) {
+    public void addStock2Exchange(AddStock2ExchangeServiceReq addStock2ExchangeServiceReq) {
 
-        Exchange exchange = exchangeRepo.findByName(addStock2ExchangeReq.exchangeName);
+        Exchange exchange = exchangeRepo.findByName(addStock2ExchangeServiceReq.exchangeName);
 
         if (exchange == null)
-            throw new IllegalArgumentException(MessageFormat.format("exchange with name {0} does not exist", addStock2ExchangeReq.exchangeName));
+            throw new IllegalArgumentException(MessageFormat.format("exchange with name {0} does not exist", addStock2ExchangeServiceReq.exchangeName));
 
-        Stock stock = stockRepo.findByName(addStock2ExchangeReq.stockName);
+        Stock stock = stockRepo.findByName(addStock2ExchangeServiceReq.stockName);
 
         if (stock == null)
-            throw new IllegalArgumentException(MessageFormat.format("stock with name {0} does not exist", addStock2ExchangeReq.stockName));
+            throw new IllegalArgumentException(MessageFormat.format("stock with name {0} does not exist", addStock2ExchangeServiceReq.stockName));
 
-        if (stockExchangeRelRepo.findByExchangeNameAndStockName(addStock2ExchangeReq.exchangeName, addStock2ExchangeReq.stockName) != null)
-            throw new IllegalArgumentException(MessageFormat.format("stock {0} is already registered to exchange {1}", addStock2ExchangeReq.stockName, addStock2ExchangeReq.exchangeName));
+        if (stockExchangeRelRepo.findByExchangeNameAndStockName(addStock2ExchangeServiceReq.exchangeName, addStock2ExchangeServiceReq.stockName) != null)
+            throw new IllegalArgumentException(MessageFormat.format("stock {0} is already registered to exchange {1}", addStock2ExchangeServiceReq.stockName, addStock2ExchangeServiceReq.exchangeName));
 
         StockExchangeRel stockExchangeRel = new StockExchangeRel();
         stockExchangeRel.setExchange(exchange);
@@ -66,7 +70,7 @@ public class ExchangeService {
 
         stockExchangeRelRepo.save(stockExchangeRel);
 
-        long numberOfStocks = stockExchangeRelRepo.countByExchangeName(addStock2ExchangeReq.exchangeName);
+        long numberOfStocks = stockExchangeRelRepo.countByExchangeName(addStock2ExchangeServiceReq.exchangeName);
 
         if (numberOfStocks >= Constant.MIN_STOCK_COUNT_FOR_LIVE)
             exchange.setLive(true);
@@ -76,16 +80,16 @@ public class ExchangeService {
         exchangeRepo.save(exchange);
     }
 
-    public void deleteStockFromExchange(DeleteStockFromExchangeReq deleteStockFromExchangeReq) {
+    public void deleteStockFromExchange(DeleteStockFromExchangeServiceReq deleteStockFromExchangeServiceReq) {
 
-        if (stockExchangeRelRepo.findByExchangeNameAndStockName(deleteStockFromExchangeReq.exchangeName, deleteStockFromExchangeReq.stockName) == null)
-            throw new IllegalArgumentException(MessageFormat.format("stock {0} is not registered to exchange {1}", deleteStockFromExchangeReq.stockName, deleteStockFromExchangeReq.exchangeName));
+        if (stockExchangeRelRepo.findByExchangeNameAndStockName(deleteStockFromExchangeServiceReq.exchangeName, deleteStockFromExchangeServiceReq.stockName) == null)
+            throw new IllegalArgumentException(MessageFormat.format("stock {0} is not registered to exchange {1}", deleteStockFromExchangeServiceReq.stockName, deleteStockFromExchangeServiceReq.exchangeName));
 
-        Exchange exchange = exchangeRepo.findByName(deleteStockFromExchangeReq.exchangeName);
+        Exchange exchange = exchangeRepo.findByName(deleteStockFromExchangeServiceReq.exchangeName);
 
-        stockExchangeRelRepo.deleteByExchangeNameAndStockName(deleteStockFromExchangeReq.exchangeName, deleteStockFromExchangeReq.stockName);
+        stockExchangeRelRepo.deleteByExchangeNameAndStockName(deleteStockFromExchangeServiceReq.exchangeName, deleteStockFromExchangeServiceReq.stockName);
 
-        long numberOfStocks = stockExchangeRelRepo.countByExchangeName(deleteStockFromExchangeReq.exchangeName);
+        long numberOfStocks = stockExchangeRelRepo.countByExchangeName(deleteStockFromExchangeServiceReq.exchangeName);
 
         if (numberOfStocks >= Constant.MIN_STOCK_COUNT_FOR_LIVE)
             exchange.setLive(true);

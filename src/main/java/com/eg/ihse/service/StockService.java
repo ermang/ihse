@@ -5,7 +5,10 @@ import com.eg.ihse.controller.request.UpdateStockPriceReq;
 import com.eg.ihse.entity.Stock;
 import com.eg.ihse.repo.StockExchangeRelRepo;
 import com.eg.ihse.repo.StockRepo;
+import com.eg.ihse.service.request.CreateStockServiceReq;
+import com.eg.ihse.service.request.UpdateStockPriceServiceReq;
 import com.eg.ihse.util.Req2Entity;
+import com.eg.ihse.util.ServiceReq2Entity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,35 +18,35 @@ import java.text.MessageFormat;
 @Service
 public class StockService {
 
+    private final ServiceReq2Entity serviceReq2Entity;
     private final StockRepo stockRepo;
     private final StockExchangeRelRepo stockExchangeRelRepo;
-    private final Req2Entity req2Entity;
 
-    public StockService(StockRepo stockRepo, StockExchangeRelRepo stockExchangeRelRepo, Req2Entity req2Entity) {
+    public StockService(ServiceReq2Entity serviceReq2Entity, StockRepo stockRepo, StockExchangeRelRepo stockExchangeRelRepo) {
+        this.serviceReq2Entity = serviceReq2Entity;
         this.stockRepo = stockRepo;
         this.stockExchangeRelRepo = stockExchangeRelRepo;
-        this.req2Entity = req2Entity;
     }
 
-    public void createStock(CreateStockReq createStockReq) {
+    public void createStock(CreateStockServiceReq createStockServiceReq) {
 
-        if (stockRepo.findByName(createStockReq.name) != null)
-            throw new IllegalArgumentException(MessageFormat.format("stock with name {0} already exists", createStockReq.name));
+        if (stockRepo.findByName(createStockServiceReq.name) != null)
+            throw new IllegalArgumentException(MessageFormat.format("stock with name {0} already exists", createStockServiceReq.name));
 
-        Stock stock = req2Entity.createStockReq2Stock(createStockReq);
+        Stock stock = serviceReq2Entity.createStockServiceReq2Stock(createStockServiceReq);
 
         stockRepo.save(stock);
     }
 
     //TODO: @Version works and solves org.springframework.orm.ObjectOptimisticLockingFailureException
-    public void updatePrice(UpdateStockPriceReq updateStockPriceReq) {
+    public void updatePrice(UpdateStockPriceServiceReq updateStockPriceServiceReq) {
 
-        Stock stock = stockRepo.findByName(updateStockPriceReq.name);
+        Stock stock = stockRepo.findByName(updateStockPriceServiceReq.name);
 
         if(stock == null)
-            throw new IllegalArgumentException(MessageFormat.format("stock with name {0} does not exist", updateStockPriceReq.name));
+            throw new IllegalArgumentException(MessageFormat.format("stock with name {0} does not exist", updateStockPriceServiceReq.name));
 
-        stock.setPrice(updateStockPriceReq.price);
+        stock.setPrice(updateStockPriceServiceReq.price);
 
         stockRepo.save(stock);
     }

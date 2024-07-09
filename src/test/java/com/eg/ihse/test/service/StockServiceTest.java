@@ -6,7 +6,10 @@ import com.eg.ihse.entity.Stock;
 import com.eg.ihse.repo.StockExchangeRelRepo;
 import com.eg.ihse.repo.StockRepo;
 import com.eg.ihse.service.StockService;
+import com.eg.ihse.service.request.CreateStockServiceReq;
+import com.eg.ihse.service.request.UpdateStockPriceServiceReq;
 import com.eg.ihse.util.Req2Entity;
+import com.eg.ihse.util.ServiceReq2Entity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,17 +19,17 @@ import java.math.BigDecimal;
 
 public class StockServiceTest {
 
+    private ServiceReq2Entity serviceReq2Entity = new ServiceReq2Entity();
     private StockRepo stockRepo;
     private StockExchangeRelRepo stockExchangeRelRepo;
-    private Req2Entity req2Entity;
+
     private StockService stockService;
 
     @BeforeEach
     public void setup() {
         stockRepo = Mockito.mock(StockRepo.class);
         stockExchangeRelRepo = Mockito.mock(StockExchangeRelRepo.class);
-        req2Entity = Mockito.mock(Req2Entity.class);
-        stockService = new StockService(stockRepo, stockExchangeRelRepo, req2Entity);
+        stockService = new StockService(serviceReq2Entity, stockRepo, stockExchangeRelRepo);
     }
 
     @Test
@@ -36,20 +39,14 @@ public class StockServiceTest {
 
     @Test
     public void create_stock() {
-        CreateStockReq req = new CreateStockReq();
-        req.name = "STOCK";
-        req.description = "description";
-        req.price = BigDecimal.ONE;
+        CreateStockServiceReq req = new CreateStockServiceReq("STOCK", "description", BigDecimal.ONE);
 
         stockService.createStock(req);
     }
 
     @Test
     public void create_stock_throws_ex_when_a_stock_with_same_name_exists() {
-        CreateStockReq req = new CreateStockReq();
-        req.name = "STOCK";
-        req.description = "description";
-        req.price = BigDecimal.ONE;
+        CreateStockServiceReq req = new CreateStockServiceReq("STOCK", "description", BigDecimal.ONE);
 
         Mockito.when(stockRepo.findByName(req.name)).thenReturn(new Stock());
 
@@ -74,9 +71,7 @@ public class StockServiceTest {
 
     @Test
     public void update_price() {
-        UpdateStockPriceReq req = new UpdateStockPriceReq();
-        req.name = "STOCK";
-        req.price = BigDecimal.ONE;
+        UpdateStockPriceServiceReq req = new UpdateStockPriceServiceReq("STOCK", BigDecimal.ONE);
 
         Mockito.when(stockRepo.findByName(req.name)).thenReturn(new Stock());
 
@@ -85,9 +80,7 @@ public class StockServiceTest {
 
     @Test
     public void update_price_throws_ex_when_stock_does_not_exist() {
-        UpdateStockPriceReq req = new UpdateStockPriceReq();
-        req.name = "STOCK";
-        req.price = BigDecimal.ONE;
+        UpdateStockPriceServiceReq req = new UpdateStockPriceServiceReq("STOCK", BigDecimal.ONE);
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {stockService.updatePrice(req);} );
     }

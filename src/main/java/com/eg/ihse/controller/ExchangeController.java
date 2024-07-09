@@ -6,6 +6,10 @@ import com.eg.ihse.controller.request.CreateExchangeReq;
 import com.eg.ihse.controller.request.DeleteStockFromExchangeReq;
 import com.eg.ihse.entity.projection.ReadStock;
 import com.eg.ihse.service.ExchangeService;
+import com.eg.ihse.service.request.AddStock2ExchangeServiceReq;
+import com.eg.ihse.service.request.CreateExchangeServiceReq;
+import com.eg.ihse.service.request.DeleteStockFromExchangeServiceReq;
+import com.eg.ihse.util.Req2ServiceReq;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,17 +20,20 @@ import java.util.List;
 public class ExchangeController {
 
     private final RequestValidator requestValidator;
+    private final Req2ServiceReq req2ServiceReq;
     private final ExchangeService exchangeService;
 
-    public ExchangeController(RequestValidator requestValidator, ExchangeService exchangeService) {
+    public ExchangeController(RequestValidator requestValidator, Req2ServiceReq req2ServiceReq, ExchangeService exchangeService) {
         this.requestValidator = requestValidator;
+        this.req2ServiceReq = req2ServiceReq;
         this.exchangeService = exchangeService;
     }
 
     @PostMapping
-    public void createStockExchange(@RequestBody @Valid CreateExchangeReq createExchangeReq) {
+    public void createExchange(@RequestBody @Valid CreateExchangeReq createExchangeReq) {
         requestValidator.validate(createExchangeReq);
-        exchangeService.createExchange(createExchangeReq);
+        CreateExchangeServiceReq serviceReq = req2ServiceReq.createExchangeReq2CreateExchangeServiceReq(createExchangeReq);
+        exchangeService.createExchange(serviceReq);
     }
 
     @GetMapping("/{exchangeName}")
@@ -38,11 +45,13 @@ public class ExchangeController {
 
     @PostMapping("/stock")
     public void addStock(@RequestBody @Valid AddStock2ExchangeReq addStock2ExchangeReq) {
-        exchangeService.addStock2Exchange(addStock2ExchangeReq);
+        AddStock2ExchangeServiceReq serviceReq = req2ServiceReq.addStock2ExchangeReq2AddStock2ExchangeServiceReq(addStock2ExchangeReq);
+        exchangeService.addStock2Exchange(serviceReq);
     }
 
     @DeleteMapping("/stock")
     public void deleteStock(@RequestBody @Valid DeleteStockFromExchangeReq deleteStockFromExchangeReq) {
-        exchangeService.deleteStockFromExchange(deleteStockFromExchangeReq);
+        DeleteStockFromExchangeServiceReq serviceReq = req2ServiceReq.deleteStockFromExchangeReq2DeleteStockFromExchangeServiceReq(deleteStockFromExchangeReq);
+        exchangeService.deleteStockFromExchange(serviceReq);
     }
 }

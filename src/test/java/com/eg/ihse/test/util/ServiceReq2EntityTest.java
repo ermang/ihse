@@ -4,24 +4,24 @@ import com.eg.ihse.controller.request.CreateExchangeReq;
 import com.eg.ihse.controller.request.CreateStockReq;
 import com.eg.ihse.entity.Exchange;
 import com.eg.ihse.entity.Stock;
+import com.eg.ihse.service.request.CreateExchangeServiceReq;
+import com.eg.ihse.service.request.CreateStockServiceReq;
 import com.eg.ihse.util.Req2Entity;
+import com.eg.ihse.util.ServiceReq2Entity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-public class Req2EntityTest {
+public class ServiceReq2EntityTest {
 
-    private final Req2Entity req2Entity = new Req2Entity();
+    private final ServiceReq2Entity serviceReq2Entity = new ServiceReq2Entity();
 
     @Test
     public void create_stock_req_2_stock() {
-        CreateStockReq req = new CreateStockReq();
-        req.name = "STOCK";
-        req.description = "description";
-        req.price = BigDecimal.ONE;
+        CreateStockServiceReq req = new CreateStockServiceReq("STOCK", "description", BigDecimal.ONE);
 
-        Stock actual = req2Entity.createStockReq2Stock(req);
+        Stock actual = serviceReq2Entity.createStockServiceReq2Stock(req);
 
         Assertions.assertEquals("STOCK", actual.getName());
         Assertions.assertEquals("description", actual.getDescription());
@@ -30,11 +30,10 @@ public class Req2EntityTest {
 
     @Test
     public void create_exchange_req_2_exchange() {
-        CreateExchangeReq req = new CreateExchangeReq();
-        req.name = "BIST";
-        req.description = "description";
+        CreateExchangeServiceReq req = new CreateExchangeServiceReq("BIST", "description");
 
-        Exchange actual = req2Entity.createExchangeReq2Exchange(req);
+
+        Exchange actual = serviceReq2Entity.createExchangeReq2Exchange(req);
 
         Assertions.assertEquals("BIST", actual.getName());
         Assertions.assertEquals("description", actual.getDescription());
