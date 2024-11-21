@@ -1,0 +1,11 @@
+trigger:
+- main  # Or whichever branch you want to trigger the pipeline on
+
+pool:
+  name: 'LocalAgentPool'  # Replace with your custom agent pool name
+
+jobs:
+- job: TestJob
+  steps:
+  - script: echo "Hello, Azure DevOps on my local agent!"
+    displayName: 'Run a simple command'
